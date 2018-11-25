@@ -37,12 +37,14 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity {
 
     ImageView imgimagen;
     Button BtnTakePhoto;
     Button BtnSendInfo;
+    Button BtnClearInfo;
     static final int REQUEST_IMAGE_CAPTURE =1;
     public String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/aaTutorial";
 
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         BtnTakePhoto = (Button) findViewById(R.id.button2);
         imgimagen = (ImageView) findViewById(R.id.imageView);
         BtnSendInfo = (Button) findViewById(R.id.button4);
+        BtnClearInfo = (Button) findViewById(R.id.button5);
         File dir = new File(path);
         dir.mkdir();
 
@@ -114,9 +117,9 @@ public class MainActivity extends AppCompatActivity {
 
                                     JSONObject jsonParam = new JSONObject();
 
-                                    jsonParam.put("image_hash", encoded);
                                     jsonParam.put("citizenuid",CUIText.getText().toString());
                                     jsonParam.put("volunteer_id",mySpinner.getSelectedItem().toString());
+                                    jsonParam.put("image_hash", encoded);
 
                                     Log.i("JSON: ", jsonParam.toString());
 
@@ -142,6 +145,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
+            }
+        });
+        BtnClearInfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                CUIText.setText("");
+                imgimagen.setImageResource(R.drawable.dni);
             }
         });
     }

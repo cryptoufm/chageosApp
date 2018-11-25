@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">MiPrimerApp</string>
+    <string name="voluntario">Voluntario</string>
+    <string name="cui">CUI</string>
+    <string name="ingrese_dpi">Ingrese DPI</string>
+    <string name="subir_voto">Subir Voto</string>
+    <string name="todo">TODO</string>
+    <string name="tomar_foto">Tomar Foto</string>
+
+    <string-array name="names">
+        <item>Postre Tortola </item>
+        <item>Bobby Alvarado</item>
+        <item>Rafita Bagur</item>
+        <item>Wito Lopez</item>
+        <item>Fernanda Gonzalez</item>
+        <item>Morsi Godinez</item>
+        <item>Cripto Profe</item>
+        <item>La del short</item>
+    </string-array>
+</resources>

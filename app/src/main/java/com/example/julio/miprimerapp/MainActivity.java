@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -32,10 +34,15 @@ import android.widget.Spinner;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -112,6 +119,56 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 try {
 
+                                    ConnectivityManager cm =
+                                            (ConnectivityManager)MainActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                                    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                                    boolean isConnected = activeNetwork != null &&
+                                            activeNetwork.isConnectedOrConnecting();
+
+                                    System.out.println("Conexion a internet:  "+isConnected);
+
+                                    JSONObject jsonParam = new JSONObject();
+
+                                    jsonParam.put("citizenuid",CUIText.getText().toString());
+                                    jsonParam.put("volunteer_id",mySpinner.getSelectedItem().toString());
+                                    jsonParam.put("image_hash", encoded);
+
+
+//                                    if (isConnected ==false) {
+//                                        try {
+//                                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("config.txt", Context.MODE_PRIVATE));
+//                                            outputStreamWriter.write(String.valueOf(jsonParam));
+//                                            outputStreamWriter.close();
+//                                        }
+//                                        catch (IOException e) {
+//                                            Log.e("Exception", "File write failed: " + e.toString());
+//                                        }
+//                                    }if(isConnected==true){
+//                                        String ret = "";
+//                                        try {
+//                                            InputStream inputStream = new FileInputStream(new File(path));
+//
+//                                            if ( inputStream != null ) {
+//                                                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+//                                                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//                                                String receiveString = "";
+//                                                StringBuilder stringBuilder = new StringBuilder();
+//                                                while ( (receiveString = bufferedReader.readLine()) != null ) {
+//                                                    stringBuilder.append(receiveString);
+//                                                }
+//                                                inputStream.close();
+//                                                ret = stringBuilder.toString();
+//                                            }
+//                                        }
+//                                        catch (FileNotFoundException e) {
+//                                            Log.e("FileToJson", "File not found: " + e.toString());
+//                                        } catch (IOException e) {
+//                                            Log.e("FileToJson", "Can not read file: " + e.toString());
+//                                        }
+//                                        System.out.println(ret);
+//                                    }
+
                                     URL url = new URL("http://35.231.64.75");
                                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                                     conn.setRequestMethod("POST");
@@ -119,12 +176,6 @@ public class MainActivity extends AppCompatActivity {
                                     conn.setRequestProperty("Accept","application/json");
                                     conn.setDoOutput(true);
                                     conn.setDoInput(true);
-
-                                    JSONObject jsonParam = new JSONObject();
-
-                                    jsonParam.put("citizenuid",CUIText.getText().toString());
-                                    jsonParam.put("volunteer_id",mySpinner.getSelectedItem().toString());
-                                    jsonParam.put("image_hash", encoded);
 
                                     Log.i("JSON: ", jsonParam.toString());
 
@@ -188,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.imagensplash)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.imagensplash))
                 .setContentTitle("Notificacion de ChangEOS")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentText("Voto registrado correctamente");
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -200,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.imagensplash)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.imagensplash))
                 .setContentTitle("Notificacion de ChangEOS")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentText("Voto no Registrado. Error de Registro");
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -212,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.imagensplash)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.imagensplash))
                 .setContentTitle("Notificacion de ChangEOS")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentText("Voto no Registrado. Error Interno");
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

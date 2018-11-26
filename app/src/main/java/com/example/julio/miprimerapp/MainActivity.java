@@ -149,7 +149,9 @@ public class MainActivity extends AppCompatActivity {
                                     if(status==500){
                                         notOkNoti();
                                     }
-
+                                    if(status==502){
+                                        notOkNotiFail();
+                                    }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -198,10 +200,22 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.imagensplash)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.imagensplash))
                 .setContentTitle("Notificacion de ChangEOS")
-                .setContentText("Voto no Registrado");
+                .setContentText("Voto no Registrado. Error de Registro");
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1,nBuilder2.build());
+    }
+
+    public void notOkNotiFail(){
+        NotificationCompat.Builder nBuilder3 = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setSmallIcon(R.drawable.imagensplash)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.imagensplash))
+                .setContentTitle("Notificacion de ChangEOS")
+                .setContentText("Voto no Registrado. Error Interno");
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1,nBuilder3.build());
     }
 
     }

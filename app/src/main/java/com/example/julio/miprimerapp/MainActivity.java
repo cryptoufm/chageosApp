@@ -39,6 +39,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import static java.lang.Integer.valueOf;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageView imgimagen;
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         BtnTakePhoto = (Button) findViewById(R.id.button2);
         imgimagen = (ImageView) findViewById(R.id.imageView);
         BtnSendInfo = (Button) findViewById(R.id.button4);
-        BtnClearInfo = (Button) findViewById(R.id.button5);
+       // BtnClearInfo = (Button) findViewById(R.id.button5);
         File dir = new File(path);
         dir.mkdir();
 
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             llamarIntent();
         }
     });
+
         BtnSendInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 try {
 
-                                    URL url = new URL("http://35.211.207.73");
+                                    URL url = new URL("http://35.231.64.75");
                                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                                     conn.setRequestMethod("POST");
                                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -130,10 +133,14 @@ public class MainActivity extends AppCompatActivity {
                                     os.flush();
                                     os.close();
 
+                                    Integer status = valueOf(conn.getResponseCode());
+
                                     Log.i("STATUS", String.valueOf(conn.getResponseCode()));
                                     Log.i("MSG" , conn.getResponseMessage());
 
                                     conn.disconnect();
+
+                                    System.out.println(status);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -145,13 +152,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
-            }
-        });
-        BtnClearInfo.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                CUIText.setText("");
-                imgimagen.setImageResource(R.drawable.dni);
             }
         });
     }

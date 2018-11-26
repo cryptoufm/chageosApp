@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -140,7 +142,13 @@ public class MainActivity extends AppCompatActivity {
 
                                     conn.disconnect();
 
-                                    System.out.println(status);
+                                    //System.out.println(status);
+                                    if(status==200){
+                                        okNoti();
+                                    }
+                                    if(status==500){
+                                        notOkNoti();
+                                    }
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -171,4 +179,29 @@ public class MainActivity extends AppCompatActivity {
             imgimagen.setImageBitmap(imageBitmap);
         }
     }
+
+    public void okNoti(){
+        NotificationCompat.Builder nBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setSmallIcon(R.drawable.imagensplash)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.imagensplash))
+                .setContentTitle("Notificacion de ChangEOS")
+                .setContentText("Voto registrado correctamente");
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1,nBuilder.build());
+    }
+
+    public void notOkNoti(){
+        NotificationCompat.Builder nBuilder2 = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setSmallIcon(R.drawable.imagensplash)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.imagensplash))
+                .setContentTitle("Notificacion de ChangEOS")
+                .setContentText("Voto no Registrado");
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1,nBuilder2.build());
+    }
+
     }
